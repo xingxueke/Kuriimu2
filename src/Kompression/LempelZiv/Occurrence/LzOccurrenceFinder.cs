@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Kompression.LempelZiv.Occurrence.Models;
 
 [assembly: InternalsVisibleTo("KompressionUnitTests")]
@@ -229,6 +230,11 @@ namespace Kompression.LempelZiv.Occurrence
             return null;
         }
 
+        private unsafe int GetLength(SuffixTreeNode node)
+        {
+            return *node.End - node.Start + 1;
+        }
+
         private LzResult TraverseTree(SuffixTreeNode node, Stream input)
         {
             var startPosition = input.Position;
@@ -236,12 +242,12 @@ namespace Kompression.LempelZiv.Occurrence
             var length = 0;
             int start;
 
-            if (!node.IsRoot)
+            if (node.Start == -1)
             {
                 var startLength = length;
                 start = node.Start;
                 TraverseEdge(node, input, ref start, ref length);
-                if (length - startLength != node.Length)
+                if (length - startLength != GetLength(node))
                     if (length >= MinOccurrenceSize && length <= MaxOccurrenceSize)
                         return new LzResult(startPosition, startPosition - start, length, null);
                     else
@@ -251,14 +257,18 @@ namespace Kompression.LempelZiv.Occurrence
             var childValue = input.ReadByte();
             input.Position--;
 
-            start = node.IsRoot ?
-                node.Children[childValue].Start :
+            SuffixTreeNode child = null;
+            if (node.Children[childValue] != IntPtr.Zero)
+                Marshal.PtrToStructure(node.Children[childValue], child);
+
+            start = node.Start == -1 ?
+                child.Start :
                 node.Start;
 
-            if (node.Children[childValue] != null)
+            if (node.Children[childValue] != IntPtr.Zero)
             {
-                if (node.Children[childValue].Start != startPosition)
-                    TraverseTreeInternal(node.Children[childValue], input, ref start, ref length);
+                if (child.Start != startPosition)
+                    TraverseTreeInternal(child, input, ref start, ref length);
             }
 
             if (length >= MinOccurrenceSize && length <= MaxOccurrenceSize)
@@ -271,23 +281,25 @@ namespace Kompression.LempelZiv.Occurrence
         {
             var startLength = length;
             TraverseEdge(node, input, ref start, ref length);
-            if (length - startLength != node.Length || input.Position >= input.Length)
+            if (length - startLength != GetLength(node) || input.Position >= input.Length)
                 return;
 
             var childValue = input.ReadByte();
             input.Position--;
 
-            if (node.Children[childValue] != null)
+            if (node.Children[childValue] != IntPtr.Zero)
             {
-                if (node.Children[childValue].Start != input.Position)
-                    TraverseTreeInternal(node.Children[childValue], input, ref start, ref length);
+                SuffixTreeNode child = null;
+                Marshal.PtrToStructure(node.Children[childValue], child);
+                if (child.Start != input.Position)
+                    TraverseTreeInternal(child, input, ref start, ref length);
             }
         }
 
-        private void TraverseEdge(SuffixTreeNode node, Stream input, ref int start, ref int length)
+        private unsafe void TraverseEdge(SuffixTreeNode node, Stream input, ref int start, ref int length)
         {
             start = node.Start - length;
-            for (var i = node.Start; i <= node.End.Value; i++)
+            for (var i = node.Start; i <= *node.End; i++)
             {
                 if (input.Position >= input.Length)
                     break;

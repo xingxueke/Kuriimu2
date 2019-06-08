@@ -1,32 +1,34 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Kompression.LempelZiv.Occurrence.Models
 {
-    [DebuggerDisplay("Length: {Length}")]
-    class SuffixTreeNode
+    [DebuggerDisplay("Length: {End.Value - Start + 1}")]
+    [StructLayout(LayoutKind.Explicit, Pack = 1)]
+    unsafe class SuffixTreeNode
     {
-        public SuffixTreeNodeCollection Children { get; }= new SuffixTreeNodeCollection(0);
+        [FieldOffset(0)]
+        public IntPtr[] Children;
 
-        public SuffixTreeNode SuffixLink { get; set; }
+        [FieldOffset(256 * 4)]
+        public IntPtr SuffixLink;
 
-        public int Start { get; set; }
-        public IntValue End { get; set; }
+        [FieldOffset(256 * 4 + 4)]
+        public int Start;
 
-        public int SuffixIndex { get; set; } = -1;
+        [FieldOffset(256 * 4 + 8)]
+        public int* End;
 
-        public bool IsRoot => Start == -1 && End.Value == -1;
+        [FieldOffset(256 * 4 + 12)]
+        public int SuffixIndex;
 
-        public bool IsLeaf => SuffixIndex >= 0;
+        //public bool IsRoot => Start == -1 && End.Value == -1;
 
-        public int Length => End.Value - Start + 1;
+        //public bool IsLeaf => SuffixIndex >= 0;
+
+        //public int Length => End.Value - Start + 1;
 
         // Path label is the combination of values from start to end inclusive of this node
-
-        public SuffixTreeNode(int start, IntValue end, SuffixTreeNode link)
-        {
-            SuffixLink = link;
-            Start = start;
-            End = end;
-        }
     }
 }

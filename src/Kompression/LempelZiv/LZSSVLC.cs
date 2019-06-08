@@ -61,7 +61,7 @@ namespace Kompression.LempelZiv
             output.Write(unk1, 0, unk1.Length);
             output.Write(unk2, 0, unk2.Length);
 
-            var lzFinder = new LzOccurrenceFinder(LzMode.Naive, 0x1000, 4, 100110);
+            var lzFinder = new LzOccurrenceFinder(LzMode.SuffixTree, (int)input.Length, 4, 100110);
             var lzResults = lzFinder.Process(input)/*.OrderBy(x => x.Position).ToList()*/;
 
             WriteCompressedData(input, output, lzResults);
