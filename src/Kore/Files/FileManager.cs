@@ -517,24 +517,51 @@ namespace Kore.Files
         {
             get
             {
+                //// Add all of the adapter filters
+                //var allTypes = _pluginLoader.
+                //    GetAdapters<ILoadFiles>().
+                //    Select(x => new
+                //    {
+                //        Name = _pluginLoader.GetMetadata<PluginInfoAttribute>(x)?.Name,
+                //        Extension = _pluginLoader.GetMetadata<PluginExtensionInfoAttribute>(x)?.Extension.ToLower()
+                //    }).
+                //    OrderBy(o => o.Name).ToList();
+
+                //// Add the special all supported files filter
+                //if (allTypes.Count > 0)
+                //    allTypes.Insert(0, new { Name = "All Supported Files", Extension = string.Join(";", allTypes.Select(x => x.Extension).Distinct()) });
+
+                //// Add the special all files filter
+                //allTypes.Add(new { Name = "All Files", Extension = "*.*" });
+
+                var allTypes = AvaloniaFileFilters;
+
+                return string.Join("|", allTypes.Select(x => $"{x.Key} ({string.Join(";",x.Value)})|{string.Join(";", x.Value)}"));
+            }
+        }
+
+        /// <summary>
+        /// Provides a complete set of file format names and extensions for open file dialogs.
+        /// </summary>
+        // TODO: Maybe make an own return type or make it tuples after switching to Net Core
+        public IList<KeyValuePair<string, List<string>>> AvaloniaFileFilters
+        {
+            get
+            {
                 // Add all of the adapter filters
                 var allTypes = _pluginLoader.
                     GetAdapters<ILoadFiles>().
-                    Select(x => new
-                    {
-                        Name = _pluginLoader.GetMetadata<PluginInfoAttribute>(x)?.Name,
-                        Extension = _pluginLoader.GetMetadata<PluginExtensionInfoAttribute>(x)?.Extension.ToLower()
-                    }).
-                    OrderBy(o => o.Name).ToList();
+                    Select(x => new KeyValuePair<string, List<string>>(_pluginLoader.GetMetadata<PluginInfoAttribute>(x)?.Name, new List<string> { _pluginLoader.GetMetadata<PluginExtensionInfoAttribute>(x)?.Extension.ToLower() })).
+                    OrderBy(o => o.Key).ToList();
 
                 // Add the special all supported files filter
                 if (allTypes.Count > 0)
-                    allTypes.Insert(0, new { Name = "All Supported Files", Extension = string.Join(";", allTypes.Select(x => x.Extension).Distinct()) });
+                    allTypes.Insert(0, new KeyValuePair<string, List<string>>("All Supported Files", allTypes.SelectMany(x => x.Value).ToList()));
 
                 // Add the special all files filter
-                allTypes.Add(new { Name = "All Files", Extension = "*.*" });
+                allTypes.Add(new KeyValuePair<string, List<string>>("All Files", new List<string> { "*.*" }));
 
-                return string.Join("|", allTypes.Select(x => $"{x.Name} ({x.Extension})|{x.Extension}"));
+                return allTypes;
             }
         }
 
