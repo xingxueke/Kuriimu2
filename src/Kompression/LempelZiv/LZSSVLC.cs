@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using System.Windows.Markup;
 using System.Xml;
 using Kompression.LempelZiv.Matcher;
+using Kompression.LempelZiv.Matcher.Models;
 using Kompression.LempelZiv.Occurrence;
-using Kompression.LempelZiv.Occurrence.Models;
 
 /* Used in [PS2 Game] and MTV archive */
 // TODO: Find out that PS2 game from IcySon55

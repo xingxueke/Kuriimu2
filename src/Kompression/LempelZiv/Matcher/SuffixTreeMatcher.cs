@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Kompression.LempelZiv.Matcher.Models;
 using Kompression.LempelZiv.Matcher.Native;
-using Kompression.LempelZiv.Occurrence.Models;
 
 namespace Kompression.LempelZiv.Matcher
 {

@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Kompression.LempelZiv.Occurrence.Models;
+using Kompression.LempelZiv.Matcher.Models;
 
 namespace Kompression.LempelZiv.Matcher
 {

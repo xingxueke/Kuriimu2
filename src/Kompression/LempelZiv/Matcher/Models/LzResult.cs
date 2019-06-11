@@ -1,6 +1,6 @@
-﻿namespace Kompression.LempelZiv.Occurrence.Models
+﻿namespace Kompression.LempelZiv.Matcher.Models
 {
-    class LzResult
+    public class LzResult
     {
         public long Position { get; }
         public long Displacement { get; }
