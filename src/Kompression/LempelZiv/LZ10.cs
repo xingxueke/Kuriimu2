@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Kompression.Exceptions;
+using Kompression.LempelZiv.Matcher;
 using Kompression.LempelZiv.Occurrence;
 using Kompression.LempelZiv.Occurrence.Models;
 
@@ -149,8 +150,8 @@ namespace Kompression.LempelZiv
 
         private static IList<LzResult> GetLzResults(Stream input)
         {
-            var lzFinder = new LzOccurrenceFinder(LzMode.Naive, 0x1000, 3, 0x12);
-            return lzFinder.Process(input).OrderBy(x => x.Position).ToList();
+            var lzFinder = new NaiveMatcher(3, 0x12, 0x1000, 0);
+            return lzFinder.FindMatches(input);
         }
 
         private static int WriteCompressedBlockToBuffer(LzResult lzResult, byte[] blockBuffer, int blockBufferLength, int bufferedBlocks)

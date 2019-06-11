@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kompression.LempelZiv.Matcher;
 using Kompression.LempelZiv.Occurrence;
 using Kompression.LempelZiv.Occurrence.Models;
 
@@ -47,7 +48,7 @@ namespace Kompression.LempelZiv
 
                     // If an occurrence goes until the end of the file, 'next' still exists
                     // In this case, 'next' shouldn't be written to the file
-                        // but there is no indicator if this symbol has to be written or not
+                    // but there is no indicator if this symbol has to be written or not
                     // According to Kuriimu, I once implemented a 0x24 static symbol for some reason
                     // Maybe 'next' is 0x24 if an occurrence goes directly until the end of a file?
                     // TODO: Fix overflowing symbol
@@ -61,8 +62,8 @@ namespace Kompression.LempelZiv
 
         public static void Compress(Stream input, Stream output)
         {
-            var lzFinder = new LzOccurrenceFinder(LzMode.Naive, 0xFF, 1, 0xFF);
-            var lzResults = lzFinder.Process(input,1).OrderBy(x => x.Position).ToList();
+            var lzFinder = new NaiveMatcher(1, 0xFF, 0xFF, 1);
+            var lzResults = lzFinder.FindMatches(input);
 
             WriteCompressedData(input, output, lzResults);
         }

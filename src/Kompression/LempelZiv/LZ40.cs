@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kompression.Exceptions;
+using Kompression.LempelZiv.Matcher;
 using Kompression.LempelZiv.Occurrence;
 using Kompression.LempelZiv.Occurrence.Models;
 
@@ -31,8 +32,8 @@ namespace Kompression.LempelZiv
             if (input.Length > 0xFFFFFF)
                 throw new InvalidOperationException("Data to compress is too long.");
 
-            var lzFinder = new LzOccurrenceFinder(LzMode.Naive, 0xFFF, 3, 0x10010F);
-            var lzResults = lzFinder.Process(input).OrderBy(x => x.Position).ToList();
+            var lzFinder = new NaiveMatcher(3, 0x10010F, 0xFFF, 0);
+            var lzResults = lzFinder.FindMatches(input);
 
             var compressionHeader = new byte[] { 0x40, (byte)(input.Length & 0xFF), (byte)((input.Length >> 8) & 0xFF), (byte)((input.Length >> 16) & 0xFF) };
             output.Write(compressionHeader, 0, 4);

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Markup;
 using System.Xml;
+using Kompression.LempelZiv.Matcher;
 using Kompression.LempelZiv.Occurrence;
 using Kompression.LempelZiv.Occurrence.Models;
 
@@ -61,8 +62,8 @@ namespace Kompression.LempelZiv
             output.Write(unk1, 0, unk1.Length);
             output.Write(unk2, 0, unk2.Length);
 
-            var lzFinder = new LzOccurrenceFinder(LzMode.SuffixTree, (int)input.Length, 4, 100110);
-            var lzResults = lzFinder.Process(input)/*.OrderBy(x => x.Position).ToList()*/;
+            var lzFinder = new SuffixTreeMatcher();
+            var lzResults = lzFinder.FindMatches(input);
 
             WriteCompressedData(input, output, lzResults);
         }
@@ -85,7 +86,7 @@ namespace Kompression.LempelZiv
             return result;
         }
 
-        private static void WriteCompressedData(Stream input, Stream output, List<LzResult> lzResults)
+        private static void WriteCompressedData(Stream input, Stream output, IList<LzResult> lzResults)
         {
             int lzIndex = 0;
             while (input.Position < input.Length)
