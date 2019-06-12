@@ -9,31 +9,35 @@ namespace Kompression.LempelZiv.Matcher.Native
 {
     internal class NativeSuffixTree
     {
-        private const string _dllPath = @"Libraries\ukkonen.dll";
-        private const string _dllPathUnix = @"Libraries\ukkonen.so";
+        private const string DllPath = @"Libraries\ukkonen";
 
-        [DllImport(_dllPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateSuffixTree")]
+        [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateSuffixTree")]
         public static extern IntPtr CreateSuffixTree();
 
-        [DllImport(_dllPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "DestroySuffixTree")]
+        [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "DestroySuffixTree")]
         public static extern void DestroySuffixTree(IntPtr tree);
 
-        [DllImport(_dllPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "Build")]
-        public static extern IntPtr Build(IntPtr tree, IntPtr input, int position, int size);
+        [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "Build")]
+        private static extern void Build(IntPtr tree, IntPtr input, int position, int size);
 
-        [DllImport(_dllPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "FindLongestMatch")]
-        public static extern void FindLongestMatch(IntPtr tree, IntPtr input, int position, int size, IntPtr displacement, IntPtr length);
+        [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "FindLongestMatch")]
+        private static extern void FindLongestMatch(IntPtr tree, IntPtr input, int position, int size, IntPtr displacement, IntPtr length);
 
-        [DllImport(_dllPathUnix, CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateSuffixTree")]
-        public static extern IntPtr CreateSuffixTreeUnix();
+        public static unsafe void BuildSuffixTree(IntPtr tree, byte[] input, int position)
+        {
+            fixed (byte* ptr = input)
+                Build(tree, (IntPtr)ptr, position, input.Length);
+        }
 
-        [DllImport(_dllPathUnix, CallingConvention = CallingConvention.Cdecl, EntryPoint = "DestroySuffixTree")]
-        public static extern void DestroySuffixTreeUnix(IntPtr tree);
+        public static unsafe (int displacement, int length) FindLongestMatch(IntPtr tree, byte[] input, int position)
+        {
+            var displacement = 0;
+            var length = 0;
 
-        [DllImport(_dllPathUnix, CallingConvention = CallingConvention.Cdecl, EntryPoint = "Build")]
-        public static extern IntPtr BuildUnix(IntPtr tree, IntPtr input, int position, int size);
+            fixed (byte* ptr = input)
+                FindLongestMatch(tree, (IntPtr)ptr, position, input.Length, new IntPtr(&displacement), new IntPtr(&length));
 
-        [DllImport(_dllPathUnix, CallingConvention = CallingConvention.Cdecl, EntryPoint = "FindLongestMatch")]
-        public static extern void FindLongestMatchUnix(IntPtr tree, IntPtr input, int position, int size, IntPtr displacement, IntPtr length);
+            return (displacement, length);
+        }
     }
 }

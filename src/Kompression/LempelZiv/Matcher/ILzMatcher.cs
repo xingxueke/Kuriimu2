@@ -9,7 +9,7 @@ using Kompression.LempelZiv.Matcher.Models;
 
 namespace Kompression.LempelZiv.Matcher
 {
-    public interface ILzMatcher
+    public interface ILzMatcher : IDisposable
     {
         IList<LzResult> FindMatches(Stream input);
     }

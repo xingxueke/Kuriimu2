@@ -64,6 +64,7 @@ namespace Kompression.LempelZiv
 
             var lzFinder = new SuffixTreeMatcher();
             var lzResults = lzFinder.FindMatches(input);
+            lzFinder.Dispose();
 
             WriteCompressedData(input, output, lzResults);
         }

@@ -6,7 +6,7 @@ using Kompression.LempelZiv.Matcher.Native;
 
 namespace Kompression.LempelZiv.Matcher
 {
-    class SuffixTreeMatcher : ILzMatcher
+    public class SuffixTreeMatcher : ILzMatcher
     {
         private IntPtr _tree;
 
@@ -16,20 +16,19 @@ namespace Kompression.LempelZiv.Matcher
 
             var inputArray = ToArray(input);
 
-            CreateTree();
-            BuildTree(inputArray, (int)input.Position);
+            _tree = NativeSuffixTree.CreateSuffixTree();
+            NativeSuffixTree.BuildSuffixTree(_tree, inputArray, (int)input.Position);
 
-            for (var i = (int)input.Position; i < input.Length; i++)
+            for (var i = Math.Max((int)input.Position, 1); i < input.Length; i++)
             {
-                var match = FindMatch(inputArray, i);
+                var match = NativeSuffixTree.FindLongestMatch(_tree, inputArray, i);
                 if (match.displacement > 0 && match.length > 0)
                 {
                     results.Add(new LzResult(i, match.displacement, match.length, null));
-                    i += match.length;
+                    i += match.length - 1;
                 }
             }
 
-            FreeTree();
             return results;
         }
 
@@ -43,50 +42,24 @@ namespace Kompression.LempelZiv.Matcher
             return inputArray;
         }
 
-        private void CreateTree()
+        public void Dispose()
         {
-            _tree = IsLinux() ? NativeSuffixTree.CreateSuffixTreeUnix() : NativeSuffixTree.CreateSuffixTree();
+            Dispose(true);
         }
 
-        private void FreeTree()
+        protected void Dispose(bool disposing)
         {
-            if (IsLinux())
-                NativeSuffixTree.DestroySuffixTreeUnix(_tree);
-            else
-                NativeSuffixTree.DestroySuffixTree(_tree);
-        }
-
-        private unsafe void BuildTree(byte[] input, int position)
-        {
-            fixed (byte* ptr = input)
+            if (!disposing)
             {
-                if (IsLinux())
-                    NativeSuffixTree.BuildUnix(_tree, (IntPtr)ptr, position, input.Length - position);
-                else
-                    NativeSuffixTree.Build(_tree, (IntPtr)ptr, position, input.Length - position);
+                if (_tree != IntPtr.Zero)
+                    NativeSuffixTree.DestroySuffixTree(_tree);
+                _tree = IntPtr.Zero;
             }
         }
 
-        private unsafe (int displacement, int length) FindMatch(byte[] input, int position)
+        ~SuffixTreeMatcher()
         {
-            var displacement = new IntPtr(0);
-            var length = new IntPtr(0);
-
-            fixed (byte* ptr = input)
-            {
-                if (IsLinux())
-                    NativeSuffixTree.FindLongestMatchUnix(_tree, (IntPtr)ptr, position, input.Length - position, displacement, length);
-                else
-                    NativeSuffixTree.FindLongestMatch(_tree, (IntPtr)ptr, position, input.Length - position, displacement, length);
-            }
-
-            return (displacement.ToInt32(), length.ToInt32());
-        }
-
-        private static bool IsLinux()
-        {
-            var p = (int)Environment.OSVersion.Platform;
-            return p == 4 || p == 6 || p == 128;
+            Dispose(false);
         }
     }
 }

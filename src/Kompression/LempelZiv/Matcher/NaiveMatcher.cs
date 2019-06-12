@@ -5,7 +5,7 @@ using Kompression.LempelZiv.Matcher.Models;
 
 namespace Kompression.LempelZiv.Matcher
 {
-    unsafe class NaiveMatcher : ILzMatcher
+    public unsafe class NaiveMatcher : ILzMatcher
     {
         public int MinOccurrenceSize { get; }
 
@@ -91,6 +91,11 @@ namespace Kompression.LempelZiv.Matcher
             input.Position = bkPos;
 
             return inputArray;
+        }
+
+        public void Dispose()
+        {
+            // Nothing to dispose here
         }
     }
 }
