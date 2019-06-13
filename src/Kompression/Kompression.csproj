@@ -22,27 +22,22 @@
   <ItemGroup>
     <Content Include="Libraries\bin32\ukkonen.dll">
 	  <PackagePath>runtimes/win-x86/native</PackagePath>
-	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <Visible>false</Visible>
     </Content>
 	<Content Include="Libraries\bin64\ukkonen.dll">
 	  <PackagePath>runtimes/win-x64/native</PackagePath>
-	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <Visible>false</Visible>
     </Content>
 	<Content Include="Libraries\bin32\libukkonen.so">
 	  <PackagePath>runtimes/linux-x86/native</PackagePath>
-	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <Visible>false</Visible>
     </Content>
 	<Content Include="Libraries\bin64\libukkonen.so">
 	  <PackagePath>runtimes/linux-x64/native</PackagePath>
-	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <Visible>false</Visible>
     </Content>
 	<Content Include="build\Kompression.targets">
 	  <PackagePath>build\Kompression.targets</PackagePath>
-	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <Visible>false</Visible>
     </Content>
   </ItemGroup>
@@ -60,4 +55,16 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net472|AnyCPU'">
+    <OutputPath>..\..\dist\Debug</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
+    <OutputPath>..\..\dist\Debug</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net472|AnyCPU'">
+    <OutputPath>..\..\dist\Release</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|AnyCPU'">
+    <OutputPath>..\..\dist\Release</OutputPath>
+  </PropertyGroup>
 </Project>
