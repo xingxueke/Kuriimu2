@@ -13,6 +13,7 @@ using Kontract.Interfaces.Common;
 using Kontract.Interfaces.Font;
 using Kontract.Interfaces.Image;
 using Kontract.Interfaces.Text;
+using Kore.Exceptions.FileManager;
 using Kore.Files.Models;
 
 namespace Kore.Files
@@ -50,38 +51,6 @@ namespace Kore.Files
         {
             _pluginLoader = pluginLoader;
         }
-
-        // TEMPORARY
-        //public static void ComposeSamplePlugins(object parent, CompositionContainer container)
-        //{
-        //    // An aggregate catalog that combines multiple catalogs.
-        //    var catalog = new AggregateCatalog();
-
-        //    // Adds all the parts found in the same assembly as the Kore class.
-        //    catalog.Catalogs.Add(new AssemblyCatalog(typeof(FileManager).Assembly));
-
-        //    // Create the CompositionContainer with the parts in the catalog if it doesn't exist.
-        //    if (container == null)
-        //        container = new CompositionContainer(catalog);
-
-        //    // Fill the imports of this object.
-        //    container.ComposeParts(parent);
-        //}
-
-        /// <summary>
-        /// Returns the currently loaded list of T type adapters.
-        /// </summary>
-        /// <typeparam name="T">Adapter type.</typeparam>
-        /// <returns>List of adapters of type T.</returns>
-        //public List<T> GetAdapters<T>() => PluginLoader.GetAdapters<T>();
-
-        /// <summary>
-        /// Returns the metadata with the specified type
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="adapter">Adapter to get metadata from</param>
-        /// <returns></returns>
-        //public T GetMetadata<T>(object adapter) where T : Attribute, IPluginMetadata => PluginLoader.GetMetadata<T>(adapter);
 
         /// <summary>
         /// Returns a list of the plugin interface type names that load files.

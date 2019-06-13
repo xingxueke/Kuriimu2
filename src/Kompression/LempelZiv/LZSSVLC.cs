@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Markup;
-using System.Xml;
 using Kompression.LempelZiv.Matcher;
 using Kompression.LempelZiv.Matcher.Models;
-using Kompression.LempelZiv.Occurrence;
 
 /* Used in [PS2 Game] and MTV archive */
 // TODO: Find out that PS2 game from IcySon55

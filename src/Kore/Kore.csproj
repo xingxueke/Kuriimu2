@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFrameworks>net472;netcoreapp2.1</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -35,6 +35,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Kontract\Kontract.csproj" />
   </ItemGroup>
+  
+  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp2.1'">
+    <DefineConstants>NET_CORE_21</DefineConstants>
+  </PropertyGroup>
   
   <ItemGroup Condition="'$(TargetFramework)'=='net472'">
     <Reference Include="PresentationCore" />

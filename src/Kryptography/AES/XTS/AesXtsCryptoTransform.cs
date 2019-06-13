@@ -112,51 +112,6 @@ namespace Kryptography.AES.XTS
             }
         }
 
-        //private void TweakCrypt(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset, byte[] tweak)
-        //{
-        //    var encryptedTweakBuffer = ArrayPool<byte>.Shared.Rent(inputCount);
-        //    ComputeEncryptedTweaks(encryptedTweakBuffer, inputCount, tweak);
-
-        //    ApplyXEX(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset, encryptedTweakBuffer);
-
-        //    ArrayPool<byte>.Shared.Return(encryptedTweakBuffer);
-        //}
-
-        //private unsafe void ComputeEncryptedTweaks(byte[] encryptedTweakBuffer, int inputCount, byte[] tweak)
-        //{
-        //    //Collect sector Tweaks
-        //    var sectorCount = RoundUpToMultiple(inputCount, _sectorSize) / _sectorSize; // inputCount / SectorSize + (inputCount % SectorSize > 0 ? 1 : 0);
-        //    var encTweak = ArrayPool<byte>.Shared.Rent(sectorCount << 4);
-        //    for (int i = 0; i < sectorCount; i++)
-        //    {
-        //        Array.Copy(tweak, 0, encTweak, i * 16, 16);
-        //        tweak.Increment(1, _littleEndianId);
-        //    }
-
-        //    //Encrypt SectorTweaks
-        //    _key2.TransformBlock(encTweak, 0, encTweak.Length, encTweak, 0);
-
-        //    fixed (byte* p = encryptedTweakBuffer)
-        //    {
-        //        long* q = (long*)p;
-        //        for (int i = 0; i < sectorCount; i++)
-        //        {
-        //            var q0 = BitConverter.ToInt64(encTweak, i << 4);
-        //            var q1 = BitConverter.ToInt64(encTweak, i << 4 | 0x8);
-
-        //            for (int j = 0; j < Math.Min(inputCount >> 4, SectorSize >> 4); j++)
-        //            {
-        //                *q++ = q0;
-        //                *q++ = q1;
-        //                (q0, q1) = (q0 << 1 ^ (q1 >> 63 & 135), q1 << 1 ^ (q0 >> 63 & 1));  //Multiply by x
-        //            }
-        //            inputCount -= SectorSize;
-        //        }
-        //    }
-
-        //    ArrayPool<byte>.Shared.Return(encTweak);
-        //}
-
         private void ApplyXex(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset, byte[] encryptedTweaks)
         {
             XorData(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset, encryptedTweaks);
