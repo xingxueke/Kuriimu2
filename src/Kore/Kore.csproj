@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>Kore</PackageId>
-    <PackageVersion>2.0.6</PackageVersion>
+    <PackageVersion>2.0.0</PackageVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageTags>UI, Kuriimu2</PackageTags>
     <RepositoryUrl>https://github.com/FanTranslatorsInternational/Kuriimu2</RepositoryUrl>

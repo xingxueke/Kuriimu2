@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>Kontract</PackageId>
-    <PackageVersion>2.0.6</PackageVersion>
+    <PackageVersion>2.0.0</PackageVersion>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageTags>Interfaces, Kuriimu2, Base</PackageTags>
     <RepositoryUrl>https://github.com/FanTranslatorsInternational/Kuriimu2</RepositoryUrl>
