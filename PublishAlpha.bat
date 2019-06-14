@@ -1,7 +1,12 @@
 @echo off
+
+echo .
 echo ##################################
 echo  Publish Kuriimu2
 echo ##################################
+echo .
+echo ### Publish Kuriimu2 x86 ###
+echo .
 
 set PROJECT=Alpha
 for /f "tokens=2-4 delims=/ " %%a in ('date /t') do (set MYDATE=%%c-%%a-%%b)

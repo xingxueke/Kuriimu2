@@ -17,7 +17,7 @@
             <Image Source="/Assets/menu-new.png" />
           </MenuItem.Icon>
         </MenuItem>
-        <MenuItem Header="_Open" Name="OpenMenu" HotKey="Ctrl+O" Command="{Binding OpenMenu_OnClick}" Click="OpenMenu_OnClick">
+        <MenuItem Header="_Open" Name="OpenMenu" HotKey="Ctrl+O" Command="{Binding OpenMenu_OnHotKey}" Click="OpenMenu_OnClick">
           <MenuItem.Icon>
             <Image Source="/Assets/menu-open.png" />
           </MenuItem.Icon>
@@ -48,40 +48,33 @@
       </MenuItem>
     </Menu>
 
-    <!--<ToolBarTray DockPanel.Dock="Top" Background="Transparent">
-      <ToolBar ToolBarTray.IsLocked="True">
-        <Button Name="NewButton" IsEnabled="False">
-          <Image Source="/Images/menu-new.png" />
-        </Button>
-        <Button Name="OpenButton">
-          <Image Source="/Images/menu-open.png" />
-        </Button>
-        <Button Name="OpenTypeButton">
-          <Image Source="/Images/menu-open-type.png" />
-        </Button>
-        <Button Name="SaveButton" IsEnabled="{Binding SaveButtonsEnabled}">
-          <Image Source="/Images/menu-save.png" />
-        </Button>
-        <Button Name="SaveAsButton" IsEnabled="{Binding SaveButtonsEnabled}">
-          <Image Source="/Images/menu-save-as.png" />
-        </Button>
-      </ToolBar>
+    <!-- Make this a toolbar tray when released -->
+    <StackPanel DockPanel.Dock="Top" Background="Transparent" Orientation="Horizontal">
+      <Button Name="NewButton" IsEnabled="False">
+        <Image Source="/Assets/menu-new.png"></Image>
+      </Button>
+      <Button Name="OpenButton">
+        <Image Source="/Assets/menu-open.png"></Image>
+      </Button>
+      <Button Name="OpenTypeButton">
+        <Image Source="/Assets/menu-open-type.png"></Image>
+      </Button>
+      <Button Name="SaveButton" IsEnabled="{Binding SaveButtonsEnabled}">
+        <Image Source="/Assets/menu-save.png" />
+      </Button>
+      <Button Name="SaveAsButton" IsEnabled="{Binding SaveButtonsEnabled}">
+        <Image Source="/Assets/menu-save-as.png" />
+      </Button>
 
-      -->
-    <!-- Text Editor Toolbar --><!--
-      <ToolBar Name="TextEditorTools" Visibility="{Binding TextEditorToolsVisible}">
-        <Button Name="TextEditorExportFile" Visibility="{Binding TextEditorCanExportFiles}">
-          <StackPanel>
-            <Image Source="/Images/export-text.png" Width="16"></Image>
-          </StackPanel>
-        </Button>
-        <Button Name="TextEditorImportFile" Visibility="{Binding TextEditorCanImportFiles}">
-          <StackPanel>
-            <Image Source="/Images/import-text.png" Width="16"></Image>
-          </StackPanel>
-        </Button>
-      </ToolBar>
-    </ToolBarTray>-->
+      <Border Width="1" Background="Gray" Margin="1 1 1 2" />
+
+      <Button Name="TextEditorExportFile" IsVisible="{Binding TextEditorCanExportFiles}">
+        <Image Source="/Assets/export-text.png" />
+      </Button>
+      <Button Name="TextEditorImportFile" IsVisible="{Binding TextEditorCanImportFiles}">
+        <Image Source="/Assets/import-text.png" />
+      </Button>
+    </StackPanel>
 
     <TabControl Name="Items" Padding="4" Background="White" SelectionChanged="Items_OnSelectionChanged" Items="{Binding Items}">
       <TabControl.ItemTemplate>

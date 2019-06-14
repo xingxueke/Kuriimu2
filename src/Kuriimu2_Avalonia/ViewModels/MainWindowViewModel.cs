@@ -26,6 +26,9 @@ namespace Kuriimu2_Avalonia.ViewModels
         private readonly FileManager _fileManager;
 
         public IEnumerable Items { get; set; }
+        public bool SaveButtonsEnabled { get; set; }
+        public bool TextEditorCanExportFiles { get; set; }
+        public bool TextEditorCanImportFiles { get; set; }
 
         public MainWindowViewModel(Window window)
         {

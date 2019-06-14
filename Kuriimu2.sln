@@ -22,11 +22,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kryptography", "src\Kryptog
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kompression", "src\Kompression\Kompression.csproj", "{2EEDCAF3-9893-4CCF-B764-EC8EFEFBB837}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuriimu2_WinForms", "src\Kuriimu2_WinForms\Kuriimu2_WinForms.csproj", "{0BD4CBA2-FEA2-42A1-92E0-FB7BA4F389C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuriimu2_Avalonia", "src\Kuriimu2_Avalonia\Kuriimu2_Avalonia.csproj", "{941C83A6-7B28-4DD5-B4BC-6D6BD6D505B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuriimu2", "src\Kuriimu2\Kuriimu2.csproj", "{F6675105-6585-4FD2-A50F-355C14BB3D8E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kuriimu2_Avalonia", "src\Kuriimu2_Avalonia\Kuriimu2_Avalonia.csproj", "{941C83A6-7B28-4DD5-B4BC-6D6BD6D505B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuriimu2_WinForms", "src\Kuriimu2_WinForms\Kuriimu2_WinForms.csproj", "{0BD4CBA2-FEA2-42A1-92E0-FB7BA4F389C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,18 +58,18 @@ Global
 		{2EEDCAF3-9893-4CCF-B764-EC8EFEFBB837}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EEDCAF3-9893-4CCF-B764-EC8EFEFBB837}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EEDCAF3-9893-4CCF-B764-EC8EFEFBB837}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0BD4CBA2-FEA2-42A1-92E0-FB7BA4F389C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0BD4CBA2-FEA2-42A1-92E0-FB7BA4F389C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0BD4CBA2-FEA2-42A1-92E0-FB7BA4F389C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0BD4CBA2-FEA2-42A1-92E0-FB7BA4F389C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F6675105-6585-4FD2-A50F-355C14BB3D8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F6675105-6585-4FD2-A50F-355C14BB3D8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F6675105-6585-4FD2-A50F-355C14BB3D8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F6675105-6585-4FD2-A50F-355C14BB3D8E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{941C83A6-7B28-4DD5-B4BC-6D6BD6D505B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{941C83A6-7B28-4DD5-B4BC-6D6BD6D505B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{941C83A6-7B28-4DD5-B4BC-6D6BD6D505B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{941C83A6-7B28-4DD5-B4BC-6D6BD6D505B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6675105-6585-4FD2-A50F-355C14BB3D8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6675105-6585-4FD2-A50F-355C14BB3D8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6675105-6585-4FD2-A50F-355C14BB3D8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6675105-6585-4FD2-A50F-355C14BB3D8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BD4CBA2-FEA2-42A1-92E0-FB7BA4F389C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BD4CBA2-FEA2-42A1-92E0-FB7BA4F389C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BD4CBA2-FEA2-42A1-92E0-FB7BA4F389C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BD4CBA2-FEA2-42A1-92E0-FB7BA4F389C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

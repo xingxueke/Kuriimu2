@@ -67,7 +67,7 @@ namespace Kontract
 
 #if NET_CORE_21
 
-            if (!(parent is PluginLoader loader))
+            if (!(parent is PluginLoader loader) || !Directory.Exists(pluginDirectory))
                 return false;
 
             var assemblies = Directory
@@ -80,8 +80,6 @@ namespace Kontract
             {
                 loader.Plugins = container.GetExports<IPlugin>();
             }
-
-            return true;
 
 #else
 
@@ -127,9 +125,9 @@ namespace Kontract
                     errors.Add(e);
             }
 
-            return !errors.Any();
-
 #endif
+
+            return !errors.Any();
         }
 
         #region Imports
