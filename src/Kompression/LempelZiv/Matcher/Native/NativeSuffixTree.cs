@@ -9,7 +9,7 @@ namespace Kompression.LempelZiv.Matcher.Native
 {
     internal class NativeSuffixTree
     {
-        private const string DllPath = @"Libraries\ukkonen";
+        private const string DllPath = @"lib\ukkonen";
 
         [DllImport(DllPath, CallingConvention = CallingConvention.Cdecl, EntryPoint = "CreateSuffixTree")]
         public static extern IntPtr CreateSuffixTree();
