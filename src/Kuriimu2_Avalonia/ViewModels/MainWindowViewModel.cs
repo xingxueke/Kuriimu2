@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
+using DynamicData.Binding;
 using Kontract;
 using Kontract.Interfaces.Font;
 using Kontract.Interfaces.Image;
@@ -21,22 +24,31 @@ namespace Kuriimu2_Avalonia.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private readonly Window _window;
         private readonly PluginLoader _pluginLoader = new PluginLoader("plugins");
         private readonly FileManager _fileManager;
 
-        public IEnumerable Items { get; set; }
-        public bool SaveButtonsEnabled { get; set; }
-        public bool TextEditorCanExportFiles { get; set; }
-        public bool TextEditorCanImportFiles { get; set; }
+        private IObservableCollection<IFileEditor> _items;
+        private bool _saveButtonsEnabled;
+        private bool _textEditorCanExportFiles;
+        private bool _textEditorCanImportFiles;
 
-        public MainWindowViewModel(Window window)
+        public IObservableCollection<IFileEditor> Items { get => _items; set => this.RaiseAndSetIfChanged(ref _items, value); }
+        public bool SaveButtonsEnabled { get => _saveButtonsEnabled; set => this.RaiseAndSetIfChanged(ref _saveButtonsEnabled, value); }
+        public bool TextEditorCanExportFiles { get => _textEditorCanExportFiles; set => this.RaiseAndSetIfChanged(ref _textEditorCanExportFiles, value); }
+        public bool TextEditorCanImportFiles { get => _textEditorCanImportFiles; set => this.RaiseAndSetIfChanged(ref _textEditorCanImportFiles, value); }
+
+        public MainWindowViewModel()
         {
-            _window = window;
-
             // Assign plugin loading event handler.
             _fileManager = new FileManager(_pluginLoader);
             _fileManager.IdentificationFailed += FileIdentificationFailed;
+
+            _items = new ObservableCollectionExtended<IFileEditor>();
+        }
+
+        private void OpenMenu_OnHotKey(Window window)
+        {
+            OpenButton(window);
         }
 
         #region Tab controls
@@ -46,34 +58,24 @@ namespace Kuriimu2_Avalonia.ViewModels
             if (Items == null)
                 return;
 
-            foreach (UserControl control in Items)
+            foreach (var control in Items)
                 CloseTab(control);
         }
 
-        public void CloseTab(UserControl tab)
+        public void CloseTab(IFileEditor tab)
         {
-            switch (tab)
-            {
-                case IFileEditor editor:
-                    _fileManager.CloseFile(editor.KoreFile);
-                    break;
-            }
-
+            _fileManager.CloseFile(tab.KoreFile);
             RemoveTab(tab);
         }
 
-        private void AddTab(UserControl control)
+        public void AddTab(IFileEditor control)
         {
-            var items = Items.Cast<object>().ToList();
-            items.Add(control);
-            Items = items;
+            Items.Add(control);
         }
 
-        private void RemoveTab(UserControl control)
+        public void RemoveTab(IFileEditor control)
         {
-            var items = Items.Cast<object>().ToList();
-            items.Remove(control);
-            Items = items;
+            Items.Remove(control);
         }
 
         #endregion
@@ -99,7 +101,7 @@ namespace Kuriimu2_Avalonia.ViewModels
 
         #endregion
 
-        public async void OpenButton()
+        public async void OpenButton(Window window)
         {
             var ofd = new OpenFileDialog
             {
@@ -107,7 +109,7 @@ namespace Kuriimu2_Avalonia.ViewModels
                 AllowMultiple = true
             };
 
-            var result = await ofd.ShowAsync(_window);
+            var result = await ofd.ShowAsync(window);
             if (result == null || !result.Any())
                 return;
 
@@ -115,7 +117,7 @@ namespace Kuriimu2_Avalonia.ViewModels
                 LoadFile(file);
         }
 
-        private bool LoadFile(string filename)
+        public bool LoadFile(string filename)
         {
             KoreFileInfo kfi = null;
 
@@ -141,7 +143,7 @@ namespace Kuriimu2_Avalonia.ViewModels
             switch (kfi.Adapter)
             {
                 case ITextAdapter txt2:
-                    AddTab(new ImageView());
+                    AddTab(new ImageView(kfi));
                     break;
                 case IImageAdapter img:
                     //ActivateItem(new ImageEditorViewModel(_fileManager, kfi));

@@ -1,0 +1,22 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Kuriimu2_Avalonia.Styles.Menu">
+
+  <Design.PreviewWith>
+    <StackPanel>
+      <Button Width="200" Margin="4,4,4,4">Test</Button>
+    </StackPanel>
+  </Design.PreviewWith>
+
+  <Style Selector="StackPanel > Button">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="BorderThickness" Value="0" />
+  </Style>
+  <Style Selector="StackPanel > Button:pointerover">
+    <Setter Property="Background" Value="PowderBlue" />
+  </Style>
+  <Style Selector="StackPanel > Button:pressed /template/ ContentPresenter">
+    <Setter Property="Background" Value="LightBlue" />
+  </Style>
+
+</Styles>

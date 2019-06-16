@@ -1,0 +1,27 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Kuriimu2_Avalonia.Styles.Menu">
+
+  <Design.PreviewWith>
+    <Menu Width="200">
+      <MenuItem Header="Test">
+        <MenuItem Header="SubTest"></MenuItem>
+      </MenuItem>
+    </Menu>
+  </Design.PreviewWith>
+
+  <Style Selector="Menu">
+    <Setter Property="Background">
+      <Setter.Value>
+        <LinearGradientBrush>
+          <LinearGradientBrush.GradientStops>
+            <GradientStop Color="#F0F0F0" Offset="0" />
+            <GradientStop Color="#FFFFFF" Offset="1" />
+          </LinearGradientBrush.GradientStops>
+        </LinearGradientBrush>
+      </Setter.Value>
+    </Setter>
+    <Setter Property="Padding" Value="2" />
+  </Style>
+  
+</Styles>

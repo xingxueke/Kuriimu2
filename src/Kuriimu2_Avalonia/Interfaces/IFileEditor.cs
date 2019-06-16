@@ -8,7 +8,7 @@ namespace Kuriimu2_Avalonia.Interfaces
     /// <summary>
     /// This is the UI editor interface for simplifying usage of editor controls.
     /// </summary>
-    internal interface IFileEditor
+    public interface IFileEditor
     {
         /// <summary>
         /// Provides access to the KoreFile instance associated with the editor.

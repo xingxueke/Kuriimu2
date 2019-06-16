@@ -1,13 +1,20 @@
 ﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Kuriimu2_Avalonia.ViewModels;assembly=Kuriimu2_Avalonia"
+        xmlns:interfaces="clr-namespace:Kuriimu2_Avalonia.Interfaces;assembly=Kuriimu2_Avalonia"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
         mc:Ignorable="d" d:DesignHeight="510" d:DesignWidth="680"
         x:Class="Kuriimu2_Avalonia.Views.MainWindow"
-        Icon="/Assets/kuriimu2.ico"
+        Icon="avares://kuriimu2_avalonia/Assets/kuriimu2.ico"
         Title="Kuriimu2" Name="MainWindow"
         Background="#F0F0F0" Closing="MainWindow_OnClose">
+
+  <Window.Styles>
+    <StyleInclude Source="resm:Kuriimu2_Avalonia.Styles.Menu.xaml?assembly=Kuriimu2_Avalonia" />
+    <StyleInclude Source="resm:Kuriimu2_Avalonia.Styles.ToolBarButton.xaml?assembly=Kuriimu2_Avalonia" />
+  </Window.Styles>
 
   <DockPanel Name="Root" DragDrop.AllowDrop="True">
     <Menu Name="Menu" DockPanel.Dock="Top">
@@ -17,7 +24,7 @@
             <Image Source="/Assets/menu-new.png" />
           </MenuItem.Icon>
         </MenuItem>
-        <MenuItem Header="_Open" Name="OpenMenu" HotKey="Ctrl+O" Command="{Binding OpenMenu_OnHotKey}" Click="OpenMenu_OnClick">
+        <MenuItem Header="_Open" Name="OpenMenu" HotKey="Ctrl+O" Command="{Binding OpenMenu_OnHotKey}" CommandParameter="{Binding ElementName=MainWindow}" Click="OpenMenu_OnClick">
           <MenuItem.Icon>
             <Image Source="/Assets/menu-open.png" />
           </MenuItem.Icon>
@@ -53,13 +60,13 @@
       <Button Name="NewButton" IsEnabled="False">
         <Image Source="/Assets/menu-new.png"></Image>
       </Button>
-      <Button Name="OpenButton">
+      <Button Name="OpenButton" Click="OpenMenu_OnClick">
         <Image Source="/Assets/menu-open.png"></Image>
       </Button>
       <Button Name="OpenTypeButton">
         <Image Source="/Assets/menu-open-type.png"></Image>
       </Button>
-      <Button Name="SaveButton" IsEnabled="{Binding SaveButtonsEnabled}">
+      <Button Name="SaveButton" IsEnabled="{Binding SaveButtonsEnabled, Mode=TwoWay}">
         <Image Source="/Assets/menu-save.png" />
       </Button>
       <Button Name="SaveAsButton" IsEnabled="{Binding SaveButtonsEnabled}">
@@ -76,16 +83,25 @@
       </Button>
     </StackPanel>
 
-    <TabControl Name="Items" Padding="4" Background="White" SelectionChanged="Items_OnSelectionChanged" Items="{Binding Items}">
+    <Button Click="TestButtonClick">Test</Button>
+
+    <TabControl Name="Items" Padding="4" Background="White" SelectionChanged="Items_OnSelectionChanged" >
       <TabControl.ItemTemplate>
         <DataTemplate>
           <StackPanel Orientation="Horizontal" Margin="0">
-            <Image Source="/Assets/text-editor-1.png" Height="16" Width="16" />
-            <TextBlock Text="{Binding KoreFile.DisplayName}" VerticalAlignment="Center" Padding="0" Margin="4 0" />
-            <Button Content="✖" Click="Item_OnClick" Foreground="Black" Width="22" Height="22" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
+            <Image Source="avares://kuriimu2_avalonia/Assets/text-editor-1.png" Height="16" Width="16" />
+            <TextBox Text="{Binding KoreFile.DisplayName}" VerticalAlignment="Center" Padding="0,0,0,0" Margin="4,0,0,0" />
+            <Button Content="✖" Click="Item_OnClick" Foreground="Black" Width="22" Height="22" />
           </StackPanel>
         </DataTemplate>
       </TabControl.ItemTemplate>
+      <TabControl.Items>
+        <TabItem>
+          <TextBlock>
+            Test
+          </TextBlock>
+        </TabItem>
+      </TabControl.Items>
     </TabControl>
   </DockPanel>
 
