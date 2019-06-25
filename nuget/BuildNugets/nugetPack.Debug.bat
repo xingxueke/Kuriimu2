@@ -5,10 +5,10 @@ set pro2019="C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MS
 set com2017="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\amd64\MSBuild.exe"
 
 set msbuild=""
-if exist %com2019% set msbuild=%com2019% ^
-else if exist %pro2019% set msbuild=%pro2019% ^
-else if exist %com2017% set msbuild=%com2017% ^
-if %msbuild%=="" exit 1
+if exist %com2019% (set msbuild=%com2019%) ^
+else if exist %pro2019% (set msbuild=%pro2019%) ^
+else if exist %com2017% (set msbuild=%com2017%)
+if %msbuild%=="" goto exit
 
 echo ##################################
 echo       Build Kuriimu2 Nugets
@@ -42,3 +42,5 @@ echo ##################################
 echo.
 
 pause
+
+:exit
