@@ -85,8 +85,8 @@
 
     <Button Click="TestButtonClick">Test</Button>
 
-    <TabControl Name="Items" Padding="4" Background="White" SelectionChanged="Items_OnSelectionChanged" >
-      <TabControl.ItemTemplate>
+        <TabControl Name="Items" Padding="4" Background="White" SelectionChanged="Items_OnSelectionChanged">
+            <TabControl.ItemTemplate>
         <DataTemplate>
           <StackPanel Orientation="Horizontal" Margin="0">
             <Image Source="avares://kuriimu2_avalonia/Assets/text-editor-1.png" Height="16" Width="16" />
