@@ -41,14 +41,14 @@
             this.tslPbHeightLabel = new System.Windows.Forms.ToolStripLabel();
             this.btnDecode = new System.Windows.Forms.Button();
             this.splProperties = new System.Windows.Forms.SplitContainer();
-            this.tbHeight = new System.Windows.Forms.TextBox();
-            this.tbWidth = new System.Windows.Forms.TextBox();
+            this.txtHeight = new System.Windows.Forms.TextBox();
+            this.txtWidth = new System.Windows.Forms.TextBox();
             this.heightLabel = new System.Windows.Forms.Label();
             this.widthLabel = new System.Windows.Forms.Label();
             this.swizzleLabel = new System.Windows.Forms.Label();
             this.encLabel = new System.Windows.Forms.Label();
             this.offsetLabel = new System.Windows.Forms.Label();
-            this.tbOffset = new System.Windows.Forms.TextBox();
+            this.txtOffset = new System.Windows.Forms.TextBox();
             this.cbSwizzle = new System.Windows.Forms.ComboBox();
             this.cbEncoding = new System.Windows.Forms.ComboBox();
             this.splExtendedProperties = new System.Windows.Forms.SplitContainer();
@@ -193,14 +193,14 @@
             // 
             // splProperties.Panel1
             // 
-            this.splProperties.Panel1.Controls.Add(this.tbHeight);
-            this.splProperties.Panel1.Controls.Add(this.tbWidth);
+            this.splProperties.Panel1.Controls.Add(this.txtHeight);
+            this.splProperties.Panel1.Controls.Add(this.txtWidth);
             this.splProperties.Panel1.Controls.Add(this.heightLabel);
             this.splProperties.Panel1.Controls.Add(this.widthLabel);
             this.splProperties.Panel1.Controls.Add(this.swizzleLabel);
             this.splProperties.Panel1.Controls.Add(this.encLabel);
             this.splProperties.Panel1.Controls.Add(this.offsetLabel);
-            this.splProperties.Panel1.Controls.Add(this.tbOffset);
+            this.splProperties.Panel1.Controls.Add(this.txtOffset);
             this.splProperties.Panel1.Controls.Add(this.cbSwizzle);
             this.splProperties.Panel1.Controls.Add(this.cbEncoding);
             // 
@@ -211,21 +211,21 @@
             this.splProperties.SplitterDistance = 55;
             this.splProperties.TabIndex = 0;
             // 
-            // tbHeight
+            // txtHeight
             // 
-            this.tbHeight.Location = new System.Drawing.Point(221, 30);
-            this.tbHeight.Name = "tbHeight";
-            this.tbHeight.Size = new System.Drawing.Size(100, 20);
-            this.tbHeight.TabIndex = 11;
-            this.tbHeight.Text = "1";
+            this.txtHeight.Location = new System.Drawing.Point(221, 30);
+            this.txtHeight.Name = "txtHeight";
+            this.txtHeight.Size = new System.Drawing.Size(100, 20);
+            this.txtHeight.TabIndex = 11;
+            this.txtHeight.Text = "1";
             // 
-            // tbWidth
+            // txtWidth
             // 
-            this.tbWidth.Location = new System.Drawing.Point(64, 30);
-            this.tbWidth.Name = "tbWidth";
-            this.tbWidth.Size = new System.Drawing.Size(100, 20);
-            this.tbWidth.TabIndex = 10;
-            this.tbWidth.Text = "1";
+            this.txtWidth.Location = new System.Drawing.Point(64, 30);
+            this.txtWidth.Name = "txtWidth";
+            this.txtWidth.Size = new System.Drawing.Size(100, 20);
+            this.txtWidth.TabIndex = 10;
+            this.txtWidth.Text = "1";
             // 
             // heightLabel
             // 
@@ -272,13 +272,13 @@
             this.offsetLabel.TabIndex = 3;
             this.offsetLabel.Text = "FileOffset:";
             // 
-            // tbOffset
+            // txtOffset
             // 
-            this.tbOffset.Location = new System.Drawing.Point(387, 3);
-            this.tbOffset.Name = "tbOffset";
-            this.tbOffset.Size = new System.Drawing.Size(100, 20);
-            this.tbOffset.TabIndex = 2;
-            this.tbOffset.Text = "0";
+            this.txtOffset.Location = new System.Drawing.Point(387, 3);
+            this.txtOffset.Name = "txtOffset";
+            this.txtOffset.Size = new System.Drawing.Size(100, 20);
+            this.txtOffset.TabIndex = 2;
+            this.txtOffset.Text = "0";
             // 
             // cbSwizzle
             // 
@@ -350,13 +350,13 @@
         private System.Windows.Forms.Label swizzleLabel;
         private System.Windows.Forms.Label encLabel;
         private System.Windows.Forms.Label offsetLabel;
-        private System.Windows.Forms.TextBox tbOffset;
+        private System.Windows.Forms.TextBox txtOffset;
         private System.Windows.Forms.ComboBox cbSwizzle;
         private System.Windows.Forms.ComboBox cbEncoding;
         private System.Windows.Forms.SplitContainer splExtendedProperties;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.TextBox tbHeight;
-        private System.Windows.Forms.TextBox tbWidth;
+        private System.Windows.Forms.TextBox txtHeight;
+        private System.Windows.Forms.TextBox txtWidth;
         private System.Windows.Forms.Label heightLabel;
         private System.Windows.Forms.Label widthLabel;
         private System.Windows.Forms.Button btnDecode;

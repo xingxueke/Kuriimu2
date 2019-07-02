@@ -51,6 +51,7 @@ namespace Kanvas
 
         #region Image encoding
 
+        // TODO: Make async
         /// <summary>
         /// Loads the binary data with given settings as an image.
         /// </summary>

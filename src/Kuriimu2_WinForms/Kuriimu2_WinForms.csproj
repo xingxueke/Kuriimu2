@@ -43,6 +43,9 @@
     <Reference Include="Cyotek.Windows.Forms.ImageBox, Version=1.2.0.0, Culture=neutral, PublicKeyToken=58daa28b0b2de221, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CyotekImageBox.1.2.1\lib\net20\Cyotek.Windows.Forms.ImageBox.dll</HintPath>
     </Reference>
+    <Reference Include="Kanvas, Version=2.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Kanvas.2.0.6\lib\net472\Kanvas.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -63,6 +66,7 @@
     <Compile Include="Controls\PictureBoxWithInterpolationMode.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CustomSwizzle.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="FormatForms\LayoutForm.cs">
@@ -124,6 +128,7 @@
     <Compile Include="MainForms\Models\ComboBoxElement.cs" />
     <Compile Include="MainForms\Models\EncodingWrapper.cs" />
     <Compile Include="MainForms\Models\FormatWrapper.cs" />
+    <Compile Include="MainForms\Models\ItemWrapper.cs" />
     <Compile Include="MainForms\Models\ListItem.cs" />
     <Compile Include="MainForms\Models\SwizzleWrapper.cs" />
     <Compile Include="MainForms\SequenceSearcher.cs">

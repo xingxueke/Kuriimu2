@@ -8,6 +8,8 @@ using Convert = Kanvas.Support.Convert;
 
 namespace Kanvas.Encoding
 {
+    // TODO: Take in a string "[Component][FloatIndicator][BitDepth]{Repeat}" to describe order, bitdepth and type of components; Every component can only be described once
+    // TODO: Create a new class GBGR to define double occuring green component in both possible orders: https://github.com/KhronosGroup/Vulkan-Docs/blob/master/chapters/formats.txt
     /// <summary>
     /// Defines the RGBA encoding.
     /// </summary>
