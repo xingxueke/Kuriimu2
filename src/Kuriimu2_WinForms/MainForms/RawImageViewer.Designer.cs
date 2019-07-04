@@ -287,7 +287,6 @@
             this.cbSwizzle.Name = "cbSwizzle";
             this.cbSwizzle.Size = new System.Drawing.Size(100, 21);
             this.cbSwizzle.TabIndex = 1;
-            this.cbSwizzle.SelectedIndexChanged += new System.EventHandler(this.CbSwizzle_SelectedIndexChanged);
             // 
             // cbEncoding
             // 
@@ -296,7 +295,6 @@
             this.cbEncoding.Name = "cbEncoding";
             this.cbEncoding.Size = new System.Drawing.Size(100, 21);
             this.cbEncoding.TabIndex = 0;
-            this.cbEncoding.SelectedIndexChanged += new System.EventHandler(this.CbEncoding_SelectedIndexChanged);
             // 
             // splExtendedProperties
             // 

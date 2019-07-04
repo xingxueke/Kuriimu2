@@ -63,7 +63,6 @@ namespace Kuriimu2_WinForms.MainForms
             tabCloseButtons.Images.SetKeyName(0, "close-button");
 
             LoadExtensions();
-            LoadImageViews();
         }
 
         private void DisplayCompositionErrors(IList<IErrorReport> reports)
@@ -88,11 +87,6 @@ namespace Kuriimu2_WinForms.MainForms
             LoadCiphers();
             LoadHashes();
             LoadCompressions();
-        }
-
-        private void LoadImageViews()
-        {
-            LoadImageTranscoder();
         }
 
         private void LoadCiphers()
@@ -124,17 +118,12 @@ namespace Kuriimu2_WinForms.MainForms
 
         private void _imgDecToolStrip_Click(object sender, EventArgs e)
         {
-            new RawImageViewer(_pluginLoader).ShowDialog();
-        }
-
-        private void LoadImageTranscoder()
-        {
-            imageTranscoderToolStripMenuItem.Enabled = _pluginLoader.GetAdapters<IColorEncodingAdapter>().Any();
+            new RawImageViewer().ShowDialog();
         }
 
         private void _imgTransToolStrip_Click(object sender, EventArgs e)
         {
-            new ImageTranscoder(_pluginLoader).ShowDialog();
+            new ImageTranscoder().ShowDialog();
         }
 
         #region Events

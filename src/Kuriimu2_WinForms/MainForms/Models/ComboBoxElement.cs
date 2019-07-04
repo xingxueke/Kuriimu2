@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Kuriimu2_WinForms.MainForms.Models
+﻿namespace Kuriimu2_WinForms.MainForms.Models
 {
+    // TODO: Replace with ItemWrapper
     class ComboBoxElement
     {
         public object Value { get; }

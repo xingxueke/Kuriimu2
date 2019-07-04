@@ -145,7 +145,6 @@
             // 
             // imageTranscoderToolStripMenuItem
             // 
-            this.imageTranscoderToolStripMenuItem.Enabled = false;
             this.imageTranscoderToolStripMenuItem.Name = "imageTranscoderToolStripMenuItem";
             this.imageTranscoderToolStripMenuItem.Size = new System.Drawing.Size(113, 20);
             this.imageTranscoderToolStripMenuItem.Text = "Image Transcoder";

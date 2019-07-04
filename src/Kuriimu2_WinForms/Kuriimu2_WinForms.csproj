@@ -87,6 +87,9 @@
     <Compile Include="MainForms\ChoosePluginForm.Designer.cs">
       <DependentUpon>ChoosePluginForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainForms\DynamicImageView.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainForms\ImageTranscoder.cs">
       <SubType>Form</SubType>
     </Compile>
