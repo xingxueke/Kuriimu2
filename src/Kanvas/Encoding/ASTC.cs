@@ -59,7 +59,7 @@ namespace Kanvas.Encoding
 
             var modeName = CreateName(xdim, ydim, zdim);
             if (!Enum.TryParse(modeName, out _blockMode))
-                throw new InvalidDataException($"Block mode {modeName} is not supported.");
+                throw new InvalidOperationException($"Block mode {modeName} is not supported.");
 
             _xDim = xdim;
             _yDim = ydim;

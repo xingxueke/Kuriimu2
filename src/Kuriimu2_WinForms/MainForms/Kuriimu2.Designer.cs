@@ -138,7 +138,6 @@
             // 
             // rawImageViewerToolStripMenuItem
             // 
-            this.rawImageViewerToolStripMenuItem.Enabled = false;
             this.rawImageViewerToolStripMenuItem.Name = "rawImageViewerToolStripMenuItem";
             this.rawImageViewerToolStripMenuItem.Size = new System.Drawing.Size(115, 20);
             this.rawImageViewerToolStripMenuItem.Text = "Raw Image Viewer";

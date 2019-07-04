@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -12,8 +11,6 @@ using Kanvas;
 using Kanvas.Interface;
 using Kanvas.Models;
 using Kontract;
-using Kontract.Attributes.Intermediate;
-using Kontract.Interfaces.Intermediate;
 using Kontract.Models;
 using Kuriimu2_WinForms.MainForms.Models;
 
@@ -31,6 +28,8 @@ namespace Kuriimu2_WinForms.MainForms
 
         private readonly SplitterPanel _pnlEncodingProperties;
         private readonly SplitterPanel _pnlSwizzleProperties;
+
+        private readonly Assembly _kanvasAssembly;
 
         private Type SelectedColorEncoding
         {
@@ -58,6 +57,7 @@ namespace Kuriimu2_WinForms.MainForms
         {
             InitializeComponent();
 
+            _kanvasAssembly = Assembly.GetAssembly(typeof(IColorEncoding));
             _loader = loader;
             _pnlEncodingProperties = splExtendedProperties.Panel1;
             _pnlSwizzleProperties = splExtendedProperties.Panel2;
@@ -81,10 +81,7 @@ namespace Kuriimu2_WinForms.MainForms
         private void LoadEncodings()
         {
             // Populate encoding dropdown
-            var encodings = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(s => s.GetTypes())
-                .Where(p => typeof(IColorEncoding).IsAssignableFrom(p) && !p.IsInterface);
-            foreach (var encoding in encodings)
+            foreach (var encoding in _kanvasAssembly.GetTypes().Where(x => typeof(IColorEncoding).IsAssignableFrom(x) && !x.IsInterface))
                 cbEncoding.Items.Add(new ItemWrapper<Type>(encoding, encoding.Name));
 
             if (_selectedEncodingIndex < cbEncoding.Items.Count)
@@ -96,13 +93,10 @@ namespace Kuriimu2_WinForms.MainForms
             // Set 'None' Swizzle
             cbSwizzle.Items.Add(new ItemWrapper<Type>(null, "None"));
 
-            // TODO: Double Custom swizzle in combobox
             // Populate swizzle dropdown
-            var swizzles = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(s => s.GetTypes())
-                .Where(p => typeof(IImageSwizzle).IsAssignableFrom(p) && !p.IsInterface);
-            foreach (var swizzle in swizzles)
+            foreach (var swizzle in _kanvasAssembly.GetTypes().Where(x => typeof(IImageSwizzle).IsAssignableFrom(x) && !x.IsInterface))
                 cbSwizzle.Items.Add(new ItemWrapper<Type>(swizzle, swizzle.Name.Replace("Swizzle", "")));
+            cbSwizzle.Items.Add(new ItemWrapper<Type>(typeof(CustomSwizzle), "Custom"));
 
             if (_selectedSwizzleIndex < cbSwizzle.Items.Count)
                 cbSwizzle.SelectedIndex = _selectedSwizzleIndex;
@@ -126,13 +120,16 @@ namespace Kuriimu2_WinForms.MainForms
         {
             cbEncoding.Enabled = cbEncoding.Items.Count > 0;
             cbSwizzle.Enabled = cbSwizzle.Items.Count > 0;
+
             txtOffset.Enabled = true;
+            txtWidth.Enabled = true;
+            txtHeight.Enabled = true;
+
             btnDecode.Enabled = _fileLoaded;
         }
 
         private void UpdateExtendedProperties()
         {
-            // TODO: Find all parameters of ctor, even optionals
             UpdateEncodingProperties();
             UpdateSwizzleProperty();
         }
@@ -145,56 +142,19 @@ namespace Kuriimu2_WinForms.MainForms
                 UpdateExtendedPropertiesWith(
                     _pnlEncodingProperties,
                     80,
-                    SelectedColorEncoding.GetConstructors().FirstOrDefault()?.GetParameters());
+                    SelectedColorEncoding.GetConstructors().LastOrDefault()?.GetParameters());
         }
 
         private void UpdateSwizzleProperty()
         {
             _pnlSwizzleProperties.Controls.Clear();
 
-            //if (SelectedSwizzle != null && SelectedSwizzle.Name == "Custom")
-            //{
-            //    var label = new Label
-            //    {
-            //        // ReSharper disable once LocalizableElement
-            //        Text = "Bit Field:",
-            //        Location = new Point(3, 0),
-            //        Size = new Size(200, 15)
-            //    };
-            //    var textBox = new TextBox
-            //    {
-            //        Name = "txtBitField",
-            //        Location = new Point(3, 0 + label.Height),
-            //        Size = new Size(200, 20)
-            //    };
-
-            //    _pnlSwizzleProperties.Controls.Add(label);
-            //    _pnlSwizzleProperties.Controls.Add(textBox);
-            //    textBox.TextChanged += CustomSwizzleBitField_TextChanged;
-            //}
-
             if (SelectedSwizzle != null)
                 UpdateExtendedPropertiesWith(
                     _pnlSwizzleProperties,
                     80,
-                    SelectedSwizzle.GetConstructors().FirstOrDefault()?.GetParameters());
+                    SelectedSwizzle.GetConstructors().LastOrDefault()?.GetParameters());
         }
-
-        //private void CustomSwizzleBitField_TextChanged(object sender, EventArgs e)
-        //{
-        //    var tb = (TextBox)sender;
-        //    var prop = (PropertyInfo)tb.Tag;
-
-        //    var splitted = Regex.Split(tb.Text, "\\)[ ]*,[ ]*\\(").Select(x => Regex.Match(x, "\\d+[ ]*,[ ]*\\d+").Value).ToArray();
-        //    if (splitted.Any(x => string.IsNullOrEmpty(x)))
-        //        return;
-
-        //    prop.SetValue(SelectedSwizzle, splitted.Select(x =>
-        //    {
-        //        var internalSplit = Regex.Split(x, "[ ]*,[ ]*").ToArray();
-        //        return (int.Parse(internalSplit[0]), int.Parse(internalSplit[1]));
-        //    }).ToList());
-        //}
 
         private void UpdateExtendedPropertiesWith(SplitterPanel panel, int width, ParameterInfo[] parameters)
         {
@@ -293,182 +253,6 @@ namespace Kuriimu2_WinForms.MainForms
             panel.Controls.Add(textBox);
         }
 
-        //private void EncodingPropertyTextBox_TextChanged(object sender, EventArgs e)
-        //{
-        //    var tb = (TextBox)sender;
-        //    var propAttr = (PropertyAttribute)tb.Tag;
-
-        //    object value;
-        //    switch (Type.GetTypeCode(propAttr.PropertyType))
-        //    {
-        //        case TypeCode.Byte:
-        //            byte val1;
-        //            if (!byte.TryParse(tb.Text, out val1))
-        //                return;
-        //            value = val1;
-        //            break;
-        //        case TypeCode.SByte:
-        //            sbyte val2;
-        //            if (!sbyte.TryParse(tb.Text, out val2))
-        //                return;
-        //            value = val2;
-        //            break;
-        //        case TypeCode.Int16:
-        //            short val3;
-        //            if (!short.TryParse(tb.Text, out val3))
-        //                return;
-        //            value = val3;
-        //            break;
-        //        case TypeCode.UInt16:
-        //            ushort val4;
-        //            if (!ushort.TryParse(tb.Text, out val4))
-        //                return;
-        //            value = val4;
-        //            break;
-        //        case TypeCode.Int32:
-        //            int val5;
-        //            if (!int.TryParse(tb.Text, out val5))
-        //                return;
-        //            value = val5;
-        //            break;
-        //        case TypeCode.UInt32:
-        //            uint val6;
-        //            if (!uint.TryParse(tb.Text, out val6))
-        //                return;
-        //            value = val6;
-        //            break;
-        //        case TypeCode.Int64:
-        //            long val7;
-        //            if (!long.TryParse(tb.Text, out val7))
-        //                return;
-        //            value = val7;
-        //            break;
-        //        case TypeCode.UInt64:
-        //            ulong val8;
-        //            if (!ulong.TryParse(tb.Text, out val8))
-        //                return;
-        //            value = val8;
-        //            break;
-        //        default:
-        //            return;
-        //    }
-
-        //    var adapterProperty = SelectedColorEncoding.GetType()
-        //        .GetProperty(propAttr.PropertyName, propAttr.PropertyType);
-        //    adapterProperty?.SetValue(SelectedColorEncoding, value);
-        //}
-
-        //private void SwizzlePropertyTextBox_TextChanged(object sender, EventArgs e)
-        //{
-        //    var tb = (TextBox)sender;
-        //    var propAttr = (PropertyAttribute)tb.Tag;
-
-        //    object value;
-        //    switch (Type.GetTypeCode(propAttr.PropertyType))
-        //    {
-        //        case TypeCode.Byte:
-        //            byte val1;
-        //            if (!byte.TryParse(tb.Text, out val1))
-        //                return;
-        //            value = val1;
-        //            break;
-        //        case TypeCode.SByte:
-        //            sbyte val2;
-        //            if (!sbyte.TryParse(tb.Text, out val2))
-        //                return;
-        //            value = val2;
-        //            break;
-        //        case TypeCode.Int16:
-        //            short val3;
-        //            if (!short.TryParse(tb.Text, out val3))
-        //                return;
-        //            value = val3;
-        //            break;
-        //        case TypeCode.UInt16:
-        //            ushort val4;
-        //            if (!ushort.TryParse(tb.Text, out val4))
-        //                return;
-        //            value = val4;
-        //            break;
-        //        case TypeCode.Int32:
-        //            int val5;
-        //            if (!int.TryParse(tb.Text, out val5))
-        //                return;
-        //            value = val5;
-        //            break;
-        //        case TypeCode.UInt32:
-        //            uint val6;
-        //            if (!uint.TryParse(tb.Text, out val6))
-        //                return;
-        //            value = val6;
-        //            break;
-        //        case TypeCode.Int64:
-        //            long val7;
-        //            if (!long.TryParse(tb.Text, out val7))
-        //                return;
-        //            value = val7;
-        //            break;
-        //        case TypeCode.UInt64:
-        //            ulong val8;
-        //            if (!ulong.TryParse(tb.Text, out val8))
-        //                return;
-        //            value = val8;
-        //            break;
-        //        default:
-        //            return;
-        //    }
-
-        //    var adapterProperty = SelectedSwizzle.GetType()
-        //        .GetProperty(propAttr.PropertyName, propAttr.PropertyType);
-        //    adapterProperty?.SetValue(SelectedSwizzle, value);
-        //}
-
-        //private void EncodingPropertyCheckBox_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    var cb = (CheckBox)sender;
-        //    var propAttr = (PropertyAttribute)cb.Tag;
-
-        //    var adapterProperty = SelectedColorEncoding.GetType()
-        //        .GetProperty(propAttr.PropertyName, propAttr.PropertyType);
-        //    adapterProperty?.SetValue(SelectedColorEncoding, cb.Checked);
-        //}
-
-        //private void SwizzlePropertyCheckBox_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    var cb = (CheckBox)sender;
-        //    var propAttr = (PropertyAttribute)cb.Tag;
-
-        //    var adapterProperty = SelectedSwizzle.GetType()
-        //        .GetProperty(propAttr.PropertyName, propAttr.PropertyType);
-        //    adapterProperty?.SetValue(SelectedSwizzle, cb.Checked);
-        //}
-
-        //private void EncodingPropertyComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    var cb = (ComboBox)sender;
-        //    var index = cb.SelectedIndex;
-        //    var format = (FormatWrapper)cb.Items[index];
-
-        //    var propAttr = (PropertyAttribute)cb.Tag;
-
-        //    var adapterProperty = SelectedColorEncoding.GetType()
-        //        .GetProperty(propAttr.PropertyName, propAttr.PropertyType);
-        //    adapterProperty?.SetValue(SelectedColorEncoding, format.Value);
-        //}
-
-        //private void SwizzlePropertyComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    var cb = (ComboBox)sender;
-        //    var index = cb.SelectedIndex;
-        //    var format = (FormatWrapper)cb.Items[index];
-
-        //    var propAttr = (PropertyAttribute)cb.Tag;
-
-        //    var adapterProperty = SelectedSwizzle.GetType()
-        //        .GetProperty(propAttr.PropertyName, propAttr.PropertyType);
-        //    adapterProperty?.SetValue(SelectedSwizzle, format.Value);
-        //}
-
         #endregion
 
         private void LoadImage()
@@ -495,22 +279,25 @@ namespace Kuriimu2_WinForms.MainForms
             var progress = new Progress<ProgressReport>();
             try
             {
-                // TODO: Test actual decoding
                 var encoding = CreateColorEncoding(SelectedColorEncoding);
+                var swizzle = CreateImageSwizzle(SelectedSwizzle);
                 var settings = new ImageSettings(encoding, width, height)
                 {
-                    // TODO: Create swizzle beforehand
-                    Swizzle = null,
+                    Swizzle = swizzle
                 };
                 pbMain.Image = Kolors.Load(imgData, settings);
+            }
+            catch (TargetInvocationException tie)
+            {
+                MessageBox.Show(tie.InnerException.Message, "Encoding or Type parameters invalid.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.ToString(), "Exception catched.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            tslPbWidth.Text = pbMain.Image.Width.ToString();
-            tslPbHeight.Text = pbMain.Image.Height.ToString();
+            tslPbWidth.Text = pbMain.Image?.Width.ToString() ?? "0";
+            tslPbHeight.Text = pbMain.Image?.Height.ToString() ?? "0";
 
             ToggleProperties(true);
             ToggleForm(true);
@@ -551,14 +338,24 @@ namespace Kuriimu2_WinForms.MainForms
 
         private IColorEncoding CreateColorEncoding(Type encodingType)
         {
-            var values = GetEncodingParameterValues(encodingType);
+            var values = GetParameterValues(_pnlEncodingProperties, encodingType).ToArray();
 
             return (IColorEncoding)Activator.CreateInstance(encodingType, values);
         }
 
-        private IEnumerable<object> GetEncodingParameterValues(Type encodingType)
+        private IImageSwizzle CreateImageSwizzle(Type swizzleType)
         {
-            var parameters = encodingType.GetConstructors().FirstOrDefault()?.GetParameters();
+            if (swizzleType == null)
+                return null;
+
+            var values = GetParameterValues(_pnlSwizzleProperties, swizzleType).ToArray();
+
+            return (IImageSwizzle)Activator.CreateInstance(swizzleType, values);
+        }
+
+        private IEnumerable<object> GetParameterValues(SplitterPanel panel, Type type)
+        {
+            var parameters = type.GetConstructors().LastOrDefault()?.GetParameters();
             if (parameters == null)
                 yield break;
 
@@ -566,17 +363,23 @@ namespace Kuriimu2_WinForms.MainForms
             {
                 var name = $"{char.ToUpper(parameter.Name[0])}{parameter.Name.Substring(1)}";
                 if (parameter.ParameterType == typeof(bool))
-                    yield return _pnlEncodingProperties.Controls.Find($"chk{name}", false).Cast<CheckBox>()
+                    yield return panel.Controls.Find($"chk{name}", false).Cast<CheckBox>()
                         .FirstOrDefault()?.Checked;
                 else if (parameter.ParameterType.IsEnum)
-                    yield return (_pnlEncodingProperties.Controls.Find($"cmb{name}", false).Cast<ComboBox>()
+                    yield return (panel.Controls.Find($"cmb{name}", false).Cast<ComboBox>()
                         .FirstOrDefault()?.SelectedItem as ItemWrapper<object>)?.Value;
                 else
                 {
-                    var textBox = _pnlEncodingProperties.Controls.Find($"txt{name}", false).Cast<TextBox>()
-                        .FirstOrDefault();
+                    TextBox textBox;
 
-                    // TODO: Move bitField special handling to swizzle creation
+                    if (name == "Width")
+                        textBox = splProperties.Panel1.Controls.Find(nameof(txtWidth), false).Cast<TextBox>().FirstOrDefault();
+                    else if (name == "Height")
+                        textBox = splProperties.Panel1.Controls.Find(nameof(txtHeight), false).Cast<TextBox>().FirstOrDefault();
+                    else
+                        textBox = panel.Controls.Find($"txt{name}", false).Cast<TextBox>()
+                            .FirstOrDefault();
+
                     if (parameter.ParameterType.Name == "bitField")
                         yield return ParseBitField(textBox.Text);
                     yield return Convert.ChangeType(textBox.Text, parameter.ParameterType);

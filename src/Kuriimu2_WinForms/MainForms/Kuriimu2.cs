@@ -92,7 +92,6 @@ namespace Kuriimu2_WinForms.MainForms
 
         private void LoadImageViews()
         {
-            LoadRawImageViewer();
             LoadImageTranscoder();
         }
 
@@ -121,11 +120,6 @@ namespace Kuriimu2_WinForms.MainForms
 
             compMenuBuilder.AddTreeToMenuStrip(compressionsToolStripMenuItem);
             compressionsToolStripMenuItem.Enabled = compressionsToolStripMenuItem.DropDownItems.Count > 0;
-        }
-
-        private void LoadRawImageViewer()
-        {
-            rawImageViewerToolStripMenuItem.Enabled = _pluginLoader.GetAdapters<IColorEncodingAdapter>().Any();
         }
 
         private void _imgDecToolStrip_Click(object sender, EventArgs e)
