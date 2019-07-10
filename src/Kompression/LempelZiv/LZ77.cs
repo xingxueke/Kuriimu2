@@ -68,7 +68,7 @@ namespace Kompression.LempelZiv
             WriteCompressedData(input, output, lzResults);
         }
 
-        private static void WriteCompressedData(Stream input, Stream output, IList<LzResult> lzResults)
+        private static void WriteCompressedData(Stream input, Stream output, IList<LzMatch> lzResults)
         {
             var bw = new BitWriter(output, BitOrder.LSBFirst);
 

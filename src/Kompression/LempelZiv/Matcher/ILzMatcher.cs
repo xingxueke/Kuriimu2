@@ -11,6 +11,6 @@ namespace Kompression.LempelZiv.Matcher
 {
     public interface ILzMatcher : IDisposable
     {
-        LzResult[] FindGreedyMatches(Stream input);
+        LzMatch[] FindMatches(Stream input);
     }
 }

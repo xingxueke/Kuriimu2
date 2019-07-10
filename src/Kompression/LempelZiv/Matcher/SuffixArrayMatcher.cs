@@ -1,23 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Kompression.LempelZiv.Matcher.Models;
+using Kompression.LempelZiv.Occurrence;
 
 namespace Kompression.LempelZiv.Matcher
 {
-    public class SuffixTreeMatcher : ILzMatcher
+    public class SuffixArrayMatcher : ILzMatcher
     {
-        private readonly SuffixTree _tree;
         private readonly MatchType _matchType;
 
+        public int WindowSize { get; }
         public int MinMatchSize { get; }
         public int MaxMatchSize { get; }
 
-        public SuffixTreeMatcher(MatchType matchType, int minMatchSize, int maxMatchSize)
+        public SuffixArrayMatcher(MatchType matchType, int windowSize, int minMatchSize, int maxMatchSize)
         {
-            _tree = new SuffixTree();
             _matchType = matchType;
 
+            WindowSize = windowSize;
             MinMatchSize = minMatchSize;
             MaxMatchSize = maxMatchSize;
         }
@@ -25,8 +29,6 @@ namespace Kompression.LempelZiv.Matcher
         public LzMatch[] FindMatches(Stream input)
         {
             var inputArray = ToArray(input);
-
-            _tree.Build(inputArray, (int)input.Position);
 
             switch (_matchType)
             {
@@ -41,27 +43,12 @@ namespace Kompression.LempelZiv.Matcher
 
         private LzMatch[] FindGreedyMatches(byte[] input, int position)
         {
-            var results = new List<LzMatch>();
-
-            for (var i = Math.Max(position, 1); i < input.Length; i++)
-            {
-                var displacement = 0;
-                var length = 0;
-                _tree.FindLongestMatch(input, i, ref displacement, ref length);
-                if (displacement > 0 && length > 0)
-                {
-                    results.Add(new LzMatch(i, displacement, length));
-                    i += length - 1;
-                }
-            }
-
-            return results.ToArray();
+            var suffixArray = SuffixArray.Create(input);
         }
 
-        // TODO: Implement OptimalParser
         private LzMatch[] FindOptimalMatches(byte[] input, int position)
         {
-            return null;
+            var suffixArray = SuffixArray.Create(input);
         }
 
         private byte[] ToArray(Stream input)
@@ -81,10 +68,9 @@ namespace Kompression.LempelZiv.Matcher
             Dispose(true);
         }
 
-        protected void Dispose(bool disposing)
+        private void Dispose(bool dispose)
         {
-            if (disposing)
-                _tree.Dispose();
+            // Nothing to dispose
         }
 
         #endregion

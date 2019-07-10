@@ -34,6 +34,7 @@ namespace Kompression.LempelZiv.Occurrence
                 indexLeft[i] = -1;
 
             Build(new ByteArray(inputArray, 0), suffixes, 0, inputArray.Length, 256);
+
             // Build left indexes
             indexLeft[inputArray[suffixes[0]]] = 0;
             byte lastValue = inputArray[suffixes[0]];
@@ -58,6 +59,7 @@ namespace Kompression.LempelZiv.Occurrence
                 indexLeft[i] = -1;
 
             Build(new ByteArray(inputArray, 0), suffixes, 0, inputSize, 256);
+
             // Build left indexes
             indexLeft[inputArray[suffixes[0]]] = 0;
             byte lastValue = inputArray[suffixes[0]];

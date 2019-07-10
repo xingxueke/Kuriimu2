@@ -79,7 +79,7 @@ namespace Kompression.LempelZiv
             return result;
         }
 
-        private static void WriteCompressedData(Stream input, Stream output, IList<LzResult> lzResults)
+        private static void WriteCompressedData(Stream input, Stream output, IList<LzMatch> lzResults)
         {
             int lzIndex = 0;
             while (input.Position < input.Length)

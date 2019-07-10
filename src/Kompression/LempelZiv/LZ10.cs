@@ -148,19 +148,19 @@ namespace Kompression.LempelZiv
             WriteBlockBuffer(output, blockBuffer, blockBufferLength);
         }
 
-        private static IList<LzResult> GetLzResults(Stream input)
+        private static IList<LzMatch> GetLzResults(Stream input)
         {
             var lzFinder = new NaiveMatcher(3, 0x12, 0x1000, 0);
             return lzFinder.FindMatches(input);
         }
 
-        private static int WriteCompressedBlockToBuffer(LzResult lzResult, byte[] blockBuffer, int blockBufferLength, int bufferedBlocks)
+        private static int WriteCompressedBlockToBuffer(LzMatch lzMatch, byte[] blockBuffer, int blockBufferLength, int bufferedBlocks)
         {
             blockBuffer[0] |= (byte)(1 << (7 - bufferedBlocks));
 
-            blockBuffer[blockBufferLength] = (byte)(((lzResult.Length - 3) << 4) & 0xF0);
-            blockBuffer[blockBufferLength++] |= (byte)(((lzResult.Displacement - 1) >> 8) & 0x0F);
-            blockBuffer[blockBufferLength++] = (byte)((lzResult.Displacement - 1) & 0xFF);
+            blockBuffer[blockBufferLength] = (byte)(((lzMatch.Length - 3) << 4) & 0xF0);
+            blockBuffer[blockBufferLength++] |= (byte)(((lzMatch.Displacement - 1) >> 8) & 0x0F);
+            blockBuffer[blockBufferLength++] = (byte)((lzMatch.Displacement - 1) & 0xFF);
 
             return blockBufferLength;
         }
