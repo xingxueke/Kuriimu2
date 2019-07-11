@@ -1,18 +1,16 @@
 ﻿namespace Kompression.LempelZiv.Matcher.Models
 {
-    public class LzResult
+    public class LzMatch
     {
         public long Position { get; }
         public long Displacement { get; }
         public int Length { get; }
-        public byte[] DiscrepancyBuffer { get; }
 
-        public LzResult(long position, long displacement, int length, byte[] discrepancyBuffer)
+        public LzMatch(long position, long displacement, int length)
         {
             Position = position;
             Displacement = displacement;
             Length = length;
-            DiscrepancyBuffer = discrepancyBuffer;
         }
     }
 }

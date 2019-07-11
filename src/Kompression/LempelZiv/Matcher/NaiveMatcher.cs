@@ -5,32 +5,32 @@ using Kompression.LempelZiv.Matcher.Models;
 
 namespace Kompression.LempelZiv.Matcher
 {
-    public unsafe class NaiveMatcher : ILzMatcher
+    /// <summary>
+    /// Naive greedy matching algorithm.
+    /// </summary>
+    public class NaiveMatcher : ILzMatcher
     {
-        public int MinOccurrenceSize { get; }
+        public int MinMatchingSize { get; }
 
-        public int MaxOccurrenceSize { get; }
+        public int MaxMatchingSize { get; }
 
         public int WindowSize { get; }
 
-        public int MinDiscrepancySize { get; }
-
-        public NaiveMatcher(int minOccurrence, int maxOccurrence, int windowSize, int minDiscrepancy)
+        public NaiveMatcher(int minMatching, int maxMatching, int windowSize)
         {
-            MinOccurrenceSize = minOccurrence;
-            MaxOccurrenceSize = maxOccurrence;
+            MinMatchingSize = minMatching;
+            MaxMatchingSize = maxMatching;
             WindowSize = windowSize;
-            MinDiscrepancySize = minDiscrepancy;
         }
 
-        public IList<LzResult> FindMatches(Stream input)
+        public unsafe LzMatch[] FindMatches(Stream input)
         {
-            var result = new List<LzResult>();
+            var result = new List<LzMatch>();
 
             fixed (byte* ptr = ToArray(input))
             {
                 var position = ptr;
-                position += MinOccurrenceSize;
+                position += MinMatchingSize;
 
                 while (position - ptr < input.Length)
                 {
@@ -38,10 +38,9 @@ namespace Kompression.LempelZiv.Matcher
 
                     var displacement = -1L;
                     var length = -1;
-                    byte[] discrepancy = null;
                     while (displacementPtr < position)
                     {
-                        if (length >= MaxOccurrenceSize)
+                        if (length >= MaxMatchingSize)
                             break;
 
                         #region Find max occurence from displacementPtr onwards
@@ -50,17 +49,14 @@ namespace Kompression.LempelZiv.Matcher
                         while (*(displacementPtr + walk) == *(position + walk))
                         {
                             walk++;
-                            if (walk >= MaxOccurrenceSize || position - ptr + walk >= input.Length)
+                            if (walk >= MaxMatchingSize || position - ptr + walk >= input.Length)
                                 break;
                         }
 
-                        if (walk >= MinOccurrenceSize && walk > length)
+                        if (walk >= MinMatchingSize && walk > length)
                         {
                             length = walk;
                             displacement = position - displacementPtr;
-                            discrepancy = new byte[MinDiscrepancySize];
-                            for (int i = 0; i < discrepancy.Length; i++)
-                                discrepancy[i] = *(position + walk + i);
                         }
 
                         #endregion
@@ -68,10 +64,10 @@ namespace Kompression.LempelZiv.Matcher
                         displacementPtr++;
                     }
 
-                    if (length >= MinOccurrenceSize)
+                    if (length >= MinMatchingSize)
                     {
-                        result.Add(new LzResult(position - ptr, displacement, length, discrepancy));
-                        position += length + MinDiscrepancySize;
+                        result.Add(new LzMatch(position - ptr, displacement, length));
+                        position += length;
                     }
                     else
                     {
@@ -80,7 +76,7 @@ namespace Kompression.LempelZiv.Matcher
                 }
             }
 
-            return result;
+            return result.ToArray();
         }
 
         private byte[] ToArray(Stream input)
