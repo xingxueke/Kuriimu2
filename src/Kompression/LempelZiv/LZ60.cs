@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Kompression.Exceptions;
 using Kompression.LempelZiv.Matcher;
-using Kompression.LempelZiv.Occurrence;
 
 namespace Kompression.LempelZiv
 {

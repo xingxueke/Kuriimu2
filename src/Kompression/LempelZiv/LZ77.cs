@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Kompression.LempelZiv.Matcher;
 using Kompression.LempelZiv.Matcher.Models;
-using Kompression.LempelZiv.Occurrence;
 
 /* Is more LZSS,described by wikipedia, through the flag denoting if following data is compressed or raw.
    Though the format is denoted as LZ77 with the magic num? (Issue 517)*/

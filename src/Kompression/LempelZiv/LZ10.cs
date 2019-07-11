@@ -5,7 +5,6 @@ using System.Linq;
 using Kompression.Exceptions;
 using Kompression.LempelZiv.Matcher;
 using Kompression.LempelZiv.Matcher.Models;
-using Kompression.LempelZiv.Occurrence;
 
 namespace Kompression.LempelZiv
 {

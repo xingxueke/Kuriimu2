@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Kompression.LempelZiv.Matcher;
 using Kompression.LempelZiv.Matcher.Models;
@@ -12,6 +14,9 @@ namespace Kompression.LempelZiv
     {
         public static void Decompress(Stream input, Stream output)
         {
+            var maxOffset = 0;
+            var maxLength = 0;
+
             var decompressedSize = ReadVlc(input);
             var unk1 = ReadVlc(input); // filetype maybe???
             var unk2 = ReadVlc(input); // compression type = 1 (LZSS?)
@@ -31,6 +36,9 @@ namespace Kompression.LempelZiv
                     var length = value >> 4 > 0 ? value >> 4 : ReadVlc(input);
                     length += 1;
 
+                    maxOffset = Math.Max(maxOffset, offset);
+                    maxLength = Math.Max(maxLength, length);
+
                     var currentPosition = output.Position;
                     var copyPosition = currentPosition - offset;
                     for (var j = 0; j < length; j++)
@@ -42,6 +50,9 @@ namespace Kompression.LempelZiv
                     }
                 }
             }
+
+            Trace.WriteLine(maxOffset);
+            Trace.WriteLine(maxLength);
         }
 
         public static void Compress(Stream input, Stream output)

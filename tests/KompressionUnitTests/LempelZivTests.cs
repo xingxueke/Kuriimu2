@@ -120,8 +120,7 @@ namespace KompressionUnitTests
         [TestMethod]
         public void Stub_LZSSVLC_SuffixTree_Decompress()
         {
-            //var file = @"D:\Users\Kirito\Desktop\vt1.first_chunk.bin";
-            var file = @"D:\Users\Kirito\Desktop\vt1.file1.bin.new2";
+            var file = @"D:\Users\Kirito\Desktop\vt1.first_chunk.bin";
             var str = File.OpenRead(file);
             var save = File.Create(file + ".decomp");
 
