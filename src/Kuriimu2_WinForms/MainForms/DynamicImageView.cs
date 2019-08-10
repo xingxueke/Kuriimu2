@@ -271,7 +271,8 @@ namespace Kuriimu2_WinForms.MainForms
 
                         if (name == "BitField")
                             yield return ParseBitField(textBox.Text);
-                        yield return Convert.ChangeType(textBox.Text, parameter.ParameterType);
+                        else
+                            yield return Convert.ChangeType(textBox.Text, parameter.ParameterType);
                     }
                 }
             }

@@ -33,6 +33,11 @@ namespace Kanvas.Encoding
         public int AlphaDepth { get; }
 
         /// <summary>
+        /// If the low nibble should be read first; Only used for luminence depth of 4
+        /// </summary>
+        public bool LowNibbleFirst { get; }
+
+        /// <summary>
         /// Byte order to use to read the values.
         /// </summary>
         public ByteOrder ByteOrder { get; set; } = ByteOrder.LittleEndian;
@@ -42,7 +47,7 @@ namespace Kanvas.Encoding
         /// </summary>
         /// <param name="l">Value of the luminence component.</param>
         /// <param name="a">Value of the alpha component.</param>
-        public LA(int l, int a)
+        public LA(int l, int a, bool lowNibbleFirst)
         {
             BitDepth = l + a;
             if (BitDepth % 4 != 0) throw new InvalidOperationException($"Overall bitDepth has to be dividable by 4. Given bitDepth: {BitDepth}");
@@ -52,6 +57,7 @@ namespace Kanvas.Encoding
 
             LuminenceDepth = l;
             AlphaDepth = a;
+            LowNibbleFirst = lowNibbleFirst;
 
             UpdateName();
         }
@@ -82,9 +88,16 @@ namespace Kanvas.Encoding
                         case 4:
                             value = br.ReadByte();
 
-                            // high nibble first
-                            yield return CreateColor((value & 0xF0) >> 4, aBitMask, lBitMask, lShift);
-                            yield return CreateColor(value & 0xF, aBitMask, lBitMask, lShift);
+                            if (LowNibbleFirst)
+                            {
+                                yield return CreateColor(value & 0xF, aBitMask, lBitMask, lShift);
+                                yield return CreateColor((value & 0xF0) >> 4, aBitMask, lBitMask, lShift);
+                            }
+                            else
+                            {
+                                yield return CreateColor((value & 0xF0) >> 4, aBitMask, lBitMask, lShift);
+                                yield return CreateColor(value & 0xF, aBitMask, lBitMask, lShift);
+                            }
                             break;
                         case 8:
                             value = br.ReadByte();
